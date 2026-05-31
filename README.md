@@ -1,0 +1,1 @@
+# McClellan-Sijuwade-Trinity-Debate-Critical-Analysis
