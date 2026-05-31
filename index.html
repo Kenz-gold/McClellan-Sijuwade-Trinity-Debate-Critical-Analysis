@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trinity Is Not an Algebra Problem — But It Isn't a Simple Answer Either</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Crimson+Pro:ital,opsz,wght@0,9..200,300;0,9..200,400;1,9..200,300;1,9..200,400&family=DM+Mono:wght@300;400&display=swap');
+
+  :root {
+    --ink: #18140f;
+    --ink-soft: #2e2820;
+    --ink-mid: #5c5247;
+    --ink-faint: #9e9082;
+    --paper: #f7f2e8;
+    --paper-warm: #ede5d5;
+    --paper-mid: #e3d9c6;
+    --paper-deep: #d4c9b4;
+    --crimson: #7a1f1f;
+    --crimson-soft: #a34040;
+    --gold: #8a6b2a;
+    --rule: #c9bfab;
+    --rule-light: #ddd5c4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 19px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.8;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 44px 140px;
+  }
+
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 52px 0 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .masthead span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .hero {
+    padding: 80px 0 52px;
+    border-bottom: 3px double var(--rule);
+    margin-bottom: 64px;
+  }
+
+  .hero-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-kicker::after {
+    content: '';
+    flex: 0 0 40px;
+    height: 1px;
+    background: var(--crimson);
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 28px;
+    max-width: 680px;
+  }
+  h1 em { font-style: italic; color: var(--crimson); }
+
+  .hero-deck {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ink-mid);
+    max-width: 600px;
+    margin-bottom: 36px;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .hero-meta-sep {
+    width: 4px; height: 4px;
+    background: var(--rule);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .hero-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(122,31,31,0.3);
+    transition: border-color 0.2s;
+  }
+  .hero-link:hover { border-color: var(--crimson); }
+
+  .intro-graf {
+    font-size: 1.18rem;
+    font-weight: 400;
+    line-height: 1.82;
+    color: var(--ink-soft);
+    margin-bottom: 52px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--rule-light);
+  }
+  .intro-graf p + p { margin-top: 1.25em; }
+  .intro-graf p:first-child::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.72;
+    margin: 0.08em 0.06em 0 0;
+    color: var(--crimson);
+    padding-top: 6px;
+  }
+
+  .context-box {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    padding: 32px 36px;
+    margin: 0 0 56px;
+    position: relative;
+  }
+  .context-box::before {
+    content: 'Context';
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    position: absolute;
+    top: -9px; left: 28px;
+    background: var(--paper-deep);
+    padding: 0 8px;
+  }
+  .context-box p {
+    font-size: 0.96rem;
+    line-height: 1.72;
+    color: var(--ink-soft);
+    margin-bottom: 0.9em;
+  }
+  .context-box p:last-child { margin-bottom: 0; }
+
+  section {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: appear 0.7s ease forwards;
+  }
+  section:nth-child(1)  { animation-delay: 0.05s; }
+  section:nth-child(2)  { animation-delay: 0.12s; }
+  section:nth-child(3)  { animation-delay: 0.19s; }
+  section:nth-child(4)  { animation-delay: 0.26s; }
+  section:nth-child(5)  { animation-delay: 0.33s; }
+  section:nth-child(6)  { animation-delay: 0.40s; }
+  section:nth-child(7)  { animation-delay: 0.47s; }
+  section:nth-child(8)  { animation-delay: 0.54s; }
+  section:nth-child(9)  { animation-delay: 0.61s; }
+  section:nth-child(10) { animation-delay: 0.68s; }
+  @keyframes appear { to { opacity: 1; transform: translateY(0); } }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    color: var(--crimson);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+
+  h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 32px 0 14px;
+  }
+
+  p { margin-bottom: 1.35em; }
+  p:last-child { margin-bottom: 0; }
+
+  .pull {
+    margin: 44px -20px;
+    padding: 34px 44px;
+    background: var(--paper-warm);
+    border-top: 2px solid var(--crimson);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .pull::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 7rem;
+    color: var(--crimson);
+    opacity: 0.12;
+    position: absolute;
+    top: -24px; left: 24px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .pull p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .aside {
+    background: var(--paper-mid);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin: 36px 0;
+  }
+  .aside-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 12px;
+  }
+  .aside p {
+    font-size: 0.97rem;
+    line-height: 1.72;
+    color: var(--ink-soft);
+    margin-bottom: 0.85em;
+  }
+  .aside p:last-child { margin-bottom: 0; }
+
+  .ornament {
+    text-align: center;
+    margin: 56px 0;
+    color: var(--rule);
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    user-select: none;
+  }
+
+  .conclusion-wrap {
+    background: var(--ink);
+    padding: 60px 56px;
+    margin-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .conclusion-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle at top right, rgba(122,31,31,0.25), transparent 65%);
+    pointer-events: none;
+  }
+  .conclusion-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle at bottom left, rgba(138,107,42,0.1), transparent 65%);
+    pointer-events: none;
+  }
+  .conclusion-wrap .section-num { color: var(--crimson-soft); }
+  .conclusion-wrap h2 { color: var(--paper); font-size: 1.85rem; }
+  .conclusion-wrap p {
+    color: rgba(247,242,232,0.82);
+    font-size: 1rem;
+    line-height: 1.82;
+  }
+  .conclusion-wrap .pull {
+    background: rgba(255,255,255,0.05);
+    border-top-color: var(--crimson-soft);
+    border-bottom-color: rgba(255,255,255,0.1);
+    margin: 40px 0;
+  }
+  .conclusion-wrap .pull::before { color: var(--crimson-soft); opacity: 0.25; }
+  .conclusion-wrap .pull p { color: rgba(247,242,232,0.9); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 0 24px 100px; }
+    .pull { margin: 36px 0; padding: 28px 28px; }
+    .conclusion-wrap { padding: 44px 32px; }
+    h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <span>Theology &amp; Philosophy of Religion</span>
+    <span>Critical Analysis &nbsp;·&nbsp; 2026</span>
+  </div>
+
+  <header class="hero">
+    <div class="hero-kicker">Analysis</div>
+
+    <h1>The Trinity Is Not an <em>Algebra Problem</em> — But It Isn't a Simple Answer Either</h1>
+    <p class="hero-deck">A critical analysis of the Scrivener–Sijuwade–McClellan conversation on the historical coherence, philosophical defensibility, and scriptural grounding of Trinitarian doctrine</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item">By Noella Kennedy &nbsp;·&nbsp; June 2026</span>
+      <span class="hero-meta-sep"></span>
+      <a class="hero-link" href="https://youtu.be/WLauwRcfgbY?si=4eMCZOxmjQWx-XQH" target="_blank">Watch the conversation ↗</a>
+    </div>
+  </header>
+
+  <div class="intro-graf">
+    <p>There is a particular kind of intellectual frustration that comes from watching a debate where both participants are partly right, partly wrong, and consistently talking past each other at precisely the moments that matter most. The conversation Glen Scrivener hosted between Dr. Dan McClellan and Dr. Joshua Sijuwade on the doctrine of the Trinity was, for me, exactly that kind of experience — genuinely illuminating in places, frustrating in others, and ultimately more valuable for the questions it surfaces than the answers it settles.</p>
+    <p>I want to be clear from the outset about what I'm doing here. I'm not approaching this as a confessional defender of any particular theological tradition, nor as a skeptic trying to score points against Christianity. I'm approaching it as someone who takes the historical and philosophical questions seriously, who finds McClellan's methodology more disciplined in important respects, who finds Sijuwade's philosophical precision genuinely useful in others, and who thinks both participants overreach in ways that obscure the most important insights each has to offer. What follows is my attempt to work through what was actually argued, what held up, what didn't, and what a more adequate position might look like.</p>
+  </div>
+
+  <div class="context-box">
+    <p>Glen Scrivener is an Australian Christian communicator who runs the YouTube channel Speak Life, where he engages theology, culture and ideas for a general audience. Dr. Dan McClellan is a biblical scholar with doctoral training from the University of Exeter who applies the methods of academic biblical studies to popular religious claims through his widely followed "Data over Dogma" social media presence. Dr. Joshua Sijuwade is a philosopher of religion specializing in analytic theology and the doctrine of God, with forthcoming books on the Trinity and the problem of evil.</p>
+    <p>The conversation was occasioned by a short video McClellan posted arguing that the doctrine of the Trinity is fundamentally an attempt to solve what he called an "algebra problem" in the Bible — how Jesus can simultaneously be God and not be God — and that what enforced Trinitarian orthodoxy historically was not theological persuasion but imperial and institutional power, beginning with Constantine's involvement at the Council of Nicaea in 325 CE. Glen responded with a video arguing that McClellan fundamentally misrepresents the Trinity, then facilitated this in-person conversation with Sijuwade to test that claim in direct dialogue. What emerged was considerably more substantive than the YouTube short that occasioned it — but it left the most important questions in the debate largely unresolved.</p>
+  </div>
+
+  <section>
+    <span class="section-num">I</span>
+    <h2>The Hidden Methodological Divide</h2>
+    <p>The single most important thing to establish — and the thing neither participant managed to name explicitly — is that McClellan and Sijuwade are largely answering different questions while appearing to answer the same one. This, more than anything, is what gives the conversation its recurring quality of ships passing in the night. Both are clearly intelligent, clearly prepared, and clearly talking about the Trinity. But they are not, for the most part, responding to each other's actual moves.</p>
+    <p>McClellan is primarily asking a descriptive historical question: given what we know about the cognitive and cultural environment of the biblical authors, and given the conceptual resources demonstrably available to them, what were they most plausibly doing when they made the claims they made about Jesus's relationship to God? This is a question about authorial intent and historical context, answered by the methods of historical criticism, cognitive linguistics, and the cognitive science of religion.</p>
+    <p>Sijuwade is primarily asking a normative theological question: what framework most coherently and faithfully accounts for the full range of the canonical tradition, from the biblical texts through the patristic sources to the conciliar decisions of the fourth century? This is a question about theological systematization and philosophical coherence, answered by the methods of analytic philosophy and patristic scholarship.</p>
+
+    <div class="pull">
+      <p>A framework can be philosophically coherent without being historically proximate to what the original authors were doing. A framework can be historically grounded without providing the most philosophically adequate account of the full tradition. These are genuinely different questions with different success criteria.</p>
+    </div>
+
+    <p>The conversation's most productive moments were precisely those where this asymmetry was temporarily bridged — where each participant was genuinely forced to reckon with the other's discipline. Its most frustrating were those where each treated his own framework as settling a question the other was answering with entirely different tools. Neither participant named the divide. But once you see it, you can't unsee it.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">II</span>
+    <h2>Two Versions of the Trinity: A Distinction That Changes Everything</h2>
+    <p>One of Sijuwade's most important contributions — and one I found myself wishing McClellan had engaged far more directly — is the distinction between what Sijuwade calls the common Western understanding of the Trinity and the authentic conciliar understanding. This is not a minor technical quibble. It fundamentally changes what McClellan's critique is actually targeting, and whether it lands at all.</p>
+    <p>The common Western understanding, which dominates contemporary Protestant and much Catholic theology, is roughly what most people mean when they talk about the Trinity today: one God existing as three coequal, coeternal, consubstantial persons — Father, Son and Holy Spirit — sharing one divine essence. This formulation finds its clearest expression not in the Council of Nicaea but in the Pseudo-Athanasian Creed — a document not produced at any council, not binding on the early church as a whole, and whose origins are generally placed in the late fifth or early sixth century in the Western Latin-speaking church. Sijuwade locates this framework's dominance not in Nicaea but in Augustine's outsized influence on the Latin church, where God came to be identified with the Trinity as a whole rather than specifically with the Father — a development made possible, Sijuwade notes with some irony, partly by Augustine's limited access to Greek sources and his resulting inability to engage the Cappadocian theologians who were the most sophisticated Trinitarian thinkers of his era.</p>
+    <p>The authentic conciliar understanding, as Sijuwade articulates it, is considerably more precise and historically more defensible. It holds that there is one God, who is the Father. The Father is the sole principle and source — the <em>monarchia</em> — of divinity. The Son is begotten of the Father and relationally distinct from him, but <em>homoousios</em> — of the same divinity — as the Father. The Holy Spirit proceeds from the Father and is similarly <em>homoousios</em>. The Father, Son and Spirit are not three coequal instances of a shared divine essence in the philosophically problematic sense the Pseudo-Athanasian formulation implies. Rather, the Father is the one God whose divinity is communicated to the Son through eternal begetting and to the Spirit through eternal procession, without that divinity being divided, diminished, or reproduced as a numerically distinct instance.</p>
+
+    <div class="aside">
+      <span class="aside-label">The 1987 Baseline</span>
+      <p>The formal logical problem of the Trinity — the apparent contradiction between the claim that there is only one God and the claim that Father, Son and Holy Spirit are each fully God while being genuinely distinct — is traceable to a paper by philosopher Richard Cartwright in 1987. Sijuwade correctly demonstrates that Cartwright's formulation takes the Pseudo-Athanasian Creed as its starting point, not the Nicene Creed or the Cappadocian Fathers. The logical problem McClellan's argument implicitly relies on is younger than both participants, targets a specific historical distortion of the tradition rather than the tradition at its best, and was therefore never the problem the early church was actually wrestling with.</p>
+    </div>
+
+    <p>This is Sijuwade's strongest and most durable contribution to the conversation. If McClellan's popular argument is largely targeting a distortion of Trinitarianism rather than the tradition at its most historically careful, then "data over dogma" cuts against McClellan's own framing as much as against the traditions he's critiquing. It's the kind of move that, once made, should force a genuine reckoning — and it's telling that the conversation never quite delivers one.</p>
+    <p>There is also an unexpected convergence neither participant fully excavates. Both are essentially arguing that the popular Western Augustinian framework is inadequate — McClellan because it's incoherent, Sijuwade because it represents a historical distortion of an earlier and more defensible position. They differ substantially on what follows from that shared diagnosis. But the fact that they share it at all is more interesting than the adversarial framing of the conversation suggests.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">III</span>
+    <h2>McClellan's Framework: Genuine Insight, Real Strengths</h2>
+    <p>McClellan's scholarly work is, I think, the most methodologically serious contribution either participant brings to the conversation — and it deserves to be engaged on those terms rather than through the lens of the more provocative framing he wraps around it publicly. It draws on cognitive linguistics and the cognitive science of religion to reconstruct how ancient authors conceptualized divine agency and divine identity, and the central insight is genuinely illuminating once you sit with it.</p>
+    <p>Throughout ancient Southwest Asia — Egypt, Mesopotamia, Anatolia, Israel and Judah — divine images functioned according to a logic modern Western thinking finds counterintuitive. A cultic statue or a royal representative could be simultaneously identified with the deity they represented and distinguished from that deity. They were considered to both be the god and not be the god, and this apparent paradox was not experienced as a contradiction requiring resolution. It was simply the intuitive logic of how divine presence and divine agency worked in that cognitive environment. The key mechanism was what McClellan calls <em>presencing</em> — the reification of an agent's existence through an authorized medium. A divine image presenced the deity by bearing the deity's name, authority, and identity in a way that allowed genuine encounter with the divine without the image being ontologically identical to the deity it represented.</p>
+    <p>He argues that this same logic underlies the Hebrew Bible's treatment of the Angel of the Lord — the figure who appears throughout the Hebrew scriptures in ways that consistently blur the boundary between the angel and YHWH himself. The key text is Exodus 23:20-21, where God tells Israel he is sending an angel and then says "my name is in him" — explaining both why the angel can exercise divine prerogatives and why it can use divine self-identification formulas while remaining distinct from YHWH. McClellan then argues that the New Testament authors — particularly John — understood Jesus's relationship to God primarily through this conceptual template. Jesus is the supreme and unique bearer of the divine name, the authorized manifestation of God's presence and authority, the living divine image through whom the Father is presenced in the world.</p>
+
+    <h3>Where the Framework Holds</h3>
+    <p>Several of the framework's strengths survived the conversation largely intact — and I think they deserve to be taken seriously by anyone genuinely trying to understand what John's author was most plausibly doing. First, it meets what we might call the availability criterion better than any Trinitarian framework. The Angel of the Lord traditions, the Metatron and Yahoel parallels from contemporaneous Jewish literature — figures in texts like the Apocalypse of Abraham and 3 Enoch who bear God's name and exercise divine authority — and the Philonic Logos theology, where Philo describes God's Logos as a distinct divine agent, even a "second God" — these are not retrojections from later scholarship. They are demonstrably present in the literary environment surrounding the biblical authors, and they provide a coherent account of how the texts could make the claims they make without requiring the precise ontological distinctions later Trinitarian theology demands.</p>
+    <p>Second, the John 17 mutual indwelling argument is one of the strongest internal textual points McClellan has, and one that wasn't developed adequately in the conversation. Jesus repeatedly prays in John 17 that his followers will be one with each other and with him just as he is one with the Father — using identical language to describe both relationships. If the Father-Son oneness in John 10:30 carries the ontological weight Sijuwade's framework requires, then John 17's extension of that same language to Jesus's followers creates a serious problem: it would mean Jesus is praying for his followers to become ontologically unified with the Father in precisely the same sense the Son is — which no Trinitarian tradition has ever accepted. The only available response is to posit two categorically different uses of identical language within the same text without any explicit marker distinguishing them. McClellan's framework handles this consistently: the oneness is communicable divine agency throughout, which is exactly why it can be extended to believers without theological absurdity.</p>
+    <p>Third, his treatment of the <em>ego eimi</em> formulations is more careful than his popular framing sometimes suggests. He explicitly acknowledges that "before Abraham was, I am" echoes the divine self-identification formulas of Exodus 3:14 and Deutero-Isaiah and represents "some kind of identification with God." He is not denying the elevated nature of the claim. He is providing a contextually grounded account of what kind of identification is being made — mediated through the divine name framework rather than through ontological identity. The fact that the Angel of the Lord uses the same formula within the same tradition — identifying itself as "the God of your father, the God of Abraham" in Exodus 3:6 while being a distinct figure from YHWH — is a genuine parallel that any ontological identity reading has to account for.</p>
+
+    <h3>Where the Framework Faces Pressure</h3>
+    <p>That said, fair assessment requires acknowledging where the framework is genuinely strained. The most significant problem is what we might call the intensity problem in early Christian devotion. McClellan's framework places Jesus within a recognizable Second Temple Jewish category of exalted divine mediators — but the early Christian devotional practice toward Jesus went considerably beyond what Second Temple Judaism typically accorded even its most exalted mediatory figures. Figures like Metatron and Yahoel were not prayed to, hymned, or treated as co-recipients of divine honor alongside God in corporate liturgical life. The intensity and exclusivity of early Christian Jesus devotion — the binitarian pattern Larry Hurtado identifies as the most historically secure datum we have — is something McClellan's framework has to account for more directly than he manages in the conversation or in his scholarly work.</p>
+    <p>The Prologue's Logos theology also creates real pressure. John's identification of the Logos as the agent of creation — "all things came into being through him, and without him not one thing came into being" — carries ontological implications the name-bearer framework handles less comfortably than its treatment of the Johannine passion narrative and farewell discourses. These are genuine challenges, not knockdown refutations. But they matter.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">IV</span>
+    <h2>McClellan's Overstatements: Where the Argument Goes Too Far</h2>
+    <p>McClellan's most consequential and most persistent error is the algebra problem framing — and it is the place where I found myself most frustrated with a thinker whose underlying historical instincts I largely trust. The framing is rhetorically effective for a popular YouTube audience, but it costs him analytical precision precisely where he needs it most, and Sijuwade correctly exploits that imprecision throughout the conversation.</p>
+    <p>The strong version of the claim — that the Trinity was always a logical contradiction enforced rather than resolved — is historically indefensible. More precisely, it conflates a genuine conceptual pressure between deeply practical and devotional commitments with a formal logical contradiction that was consciously recognized from the beginning and deliberately attempted to be resolved. The early church was not starting from two explicitly stated contradictory propositions and trying to solve for a consistent variable. What was actually happening is more interesting and more historically accurate: a growing strain between two things the early church was already doing simultaneously — maintaining inherited Jewish monotheistic commitment and practicing Jesus devotion of unprecedented intensity. That tension was practical and liturgical before it was philosophical. It was driven by the need to articulate and defend an existing devotional reality, not to resolve a recognized logical contradiction.</p>
+
+    <div class="pull">
+      <p>The algebra problem framing makes the process look more contradictory and more politically contingent than it actually was — and that distortion then licenses McClellan's stronger claims about imperial enforcement and fundamental incoherence, none of which follow from the more accurate account of what was actually happening in the early centuries.</p>
+    </div>
+
+    <p>The more defensible version of McClellan's underlying argument does survive this correction, though. The conceptual tools available in the first-century Jewish milieu — divine images, agency transference, the Angel of the Lord tradition, Logos theology — were sufficient to account for the devotional and soteriological pressure without requiring or generating the specific ontological commitments <em>homoousios</em> demands. The move to <em>homoousios</em> represents a genuine conceptual innovation, not merely the articulation of something always already implicit. And once the tradition committed to answering the question in the register of Greek substance metaphysics, certain tensions that were not originally experienced as logical problems became visible as such — not because they were always there, but because the new philosophical register made them visible and in some configurations generated them. The algebra problem is partly an artifact of the translation process itself, not a feature of the original data.</p>
+    <p>McClellan's imperial enforcement argument, while historically accurate in its modest form, suffers from the same tendency toward overstatement. By the end of the conversation he had significantly narrowed this claim, conceding that Constantine didn't formulate or catalyze the theological ideas themselves. The Synod of Antioch in 324 — one year before Nicaea, convened under a persecuted religion with no imperial reward on offer — produced a substantially proto-Nicene creed demonstrating that the pro-Nicene trajectory had genuine theological momentum before Constantine was personally involved. Constantine raised the institutional stakes of theological disagreement. He didn't arbitrarily select a winner from symmetrically positioned alternatives.</p>
+    <p>What the enforcement argument does retain with full force, however, is the suppression point — and this matters more than the conversation acknowledged. Constantine ordered Arius's books burned and those hiding them killed. The historical record of the losing tradition was actively eliminated, which means we read the Arian position almost entirely through its opponents. The asymmetry we observe in the historical documentation is itself partly a product of suppression rather than purely of theological persuasion. The most defensible version of McClellan's imperial argument is therefore: power didn't author the doctrine, but it buried the alternatives and foreclosed a debate that might otherwise have remained genuinely open.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">V</span>
+    <h2>Sijuwade's Framework: Philosophically Serious, Methodologically Strained</h2>
+    <p>Sijuwade's defense of conciliar Trinitarianism is considerably more sophisticated than anything McClellan's public work typically engages with — and watching McClellan actually reckon with it in real time is one of the genuine pleasures of the conversation. His demonstration that the logical problem of the Trinity targets the Pseudo-Athanasian framework rather than the conciliar one is historically accurate and philosophically significant. His patristic citations — ranging from Ignatius in the late first century through the Cappadocian Fathers in the fourth — are genuinely effective at establishing the depth and continuity of the pro-Nicene trajectory.</p>
+    <p>But Sijuwade's argument has a methodological weakness at its center that becomes more significant the more carefully you press it — and I don't think the conversation's format pressed it nearly hard enough.</p>
+
+    <h3>The Underdetermination Problem</h3>
+    <p>His citation strategy consistently leverages what we might call underdetermination — the same surface-level affirmations of Christ's divinity are compatible with multiple mutually exclusive underlying conceptual frameworks. When Ignatius calls Jesus "our God," when Irenaeus affirms the Son is of one substance with the Father, when Gregory Thaumaturgus insists there is nothing created in the Trinity — these are genuine early high Christological affirmations. But they don't establish that the precise conciliar framework Sijuwade is defending was already fully operative and intentionally deployed by authors writing before the philosophical debates that made that precision necessary.</p>
+    <p>The <em>homoousios</em> controversy itself is the most vivid historical illustration of the problem. If the conciliar framework were already clearly present in the patristic sources, it becomes very difficult to explain why the concept was initially rejected at an earlier council as potentially Sabellian, why figures sympathetic to Arius felt able to sign the Nicene Creed by interpreting it in ways compatible with their own commitments, and why the debates continued vigorously for another sixty years after Nicaea. The ambiguity that made all of that possible is precisely the underdetermination problem applied to the historical sources — and Sijuwade's citations, however impressive in volume, cannot establish uniformity of framework from uniformity of language.</p>
+
+    <div class="aside">
+      <span class="aside-label">The Deeper Problem with the Citations</span>
+      <p>Several of the cited figures, examined beyond the carefully chosen phrases, reveal broader theological commitments that are not merely incomplete versions of conciliar Trinitarianism but in some cases structurally incompatible with it. Tertullian describes the Son as a <em>portio</em> — a portion — of the Father's substance, implying derivative and potentially lesser divinity. Origen explicitly subordinates the Son ontologically: the Father alone is <em>autotheos</em>, God in himself, while the Son is God only derivatively by participation — a position structurally closer to Arianism than to Nicene orthodoxy, which is precisely why Arius could plausibly claim Origenist lineage. Justin Martyr calls the Son "another God" — language Sijuwade's monarchical framework cannot accommodate without significant reinterpretation.</p>
+      <p>The carefully chosen phrases converge on the surface conclusion. The broader corpora in several cases do not. The irony is considerable: many of the citations Sijuwade marshals as witnesses for his framework are at least as naturally — and in some cases more naturally — read through McClellan's divine image framework.</p>
+    </div>
+
+    <h3>Explanatory Coherence Is Not Historical Availability</h3>
+    <p>Sijuwade's patristic citations were introduced in direct response to McClellan's claim that the full conciliar framework wasn't present before Origen — his goal being to demonstrate historical continuity, that the two components of his conciliar definition were already being affirmed from the late first century onward, without imperial pressure. On that narrow point, the citations do have genuine evidential force. But the deeper methodological problem runs beneath the citation strategy itself, and it's the one I kept returning to.</p>
+    <p>Sijuwade's argument consistently moves from "this framework coherently explains the textual data" to "therefore this framework was conceptually available to and operative in the minds of the original authors." That inference doesn't hold. Explanatory coherence is a property of the relationship between an interpretive framework and the data it organizes — it tells you nothing directly about the historical and conceptual horizon within which the authors were working. A modern physicist could construct a coherent quantum mechanical account of certain ancient astronomical observations without quantum mechanics being available to Babylonian astronomers. The point is obvious when stated directly. But Sijuwade's citation strategy implicitly relies on eliding it, and the conversation never called him on it.</p>
+    <p>If McClellan's divine image Christology — drawing on frameworks demonstrably available in the Second Temple period — accounts for the same textual data without requiring the additional ontological commitments of conciliar Trinitarianism, then by basic principles of explanatory parsimony it is the more historically responsible reconstruction. Sijuwade would need to demonstrate not just that his framework fits the data, but that the data requires the additional ontological weight his framework carries. That is a significantly harder argumentative task, and one he doesn't fully discharge.</p>
+
+    <h3>Surface Coherence and Its Limits</h3>
+    <p>Sijuwade's emphasis on the coherency of the Nicene articulation is legitimate as far as it goes — but it moves too quickly from relative coherence to unqualified coherence, and the conversation lets him get away with it. The conciliar framework avoids the most acute versions of the logical problem targeting the Pseudo-Athanasian model, but it faces its own distinct philosophical challenges worth naming precisely.</p>
+    <p>The <em>homoousios</em> problem asks what it means for the Son and Spirit to share the Father's divinity if they are genuinely distinct persons — in the physical world, sharing the same nature while being distinct individuals generally results in numerical plurality of the kind Trinitarianism wants to avoid. The distinction problem asks what the ontological ground of genuine personal distinction within a perfectly simple divine being actually is — relations of origin in the physical world generate numerically distinct beings, and if divine begetting and procession are genuinely analogous, tritheism looms. The subordination problem asks whether the relational asymmetry between the Father as sole principle and source and the Son and Spirit as derived is compatible with genuine ontological equality.</p>
+    <p>Beneath these structural problems lies a more specific one. The <em>homoousios</em> claim requires a coherent account of what it means for distinct hypostases to share a single divine essence without either collapsing into each other or constituting two separate instances of divinity. Sijuwade's philosophical work on tropes — the divine essence as a single non-repeatable trope rather than a universal that could be multiply instantiated — is his attempt to provide that account. It is sophisticated and does real work. But it is a highly contested metaphysical commitment that most analytical philosophers of religion don't find fully satisfying, because it struggles to explain how a single non-repeatable trope can be genuinely shared by three distinct hypostases without the sharing becoming merely nominal or the distinctness being compromised. The monarchical structure introduces a further difficulty: if the Father is the sole principle and source from whom the Son derives his divinity, that divinity is in some sense dependent and derivative even if identical in nature. Whether eternal generation as a technical concept adequately explains how the Son can be fully divine and <em>homoousios</em> while genuinely derived from the Father as his sole principle — without succumbing to crypto-subordinationism — remains philosophically contested. Many analytical philosophers find the concept either incoherent or insufficiently specified to bear the argumentative weight placed on it.</p>
+    <p>The surface coherence Sijuwade emphasizes is genuine as far as it goes. Whether the deeper philosophical infrastructure fully supports it is where serious analytical philosophy of religion remains genuinely unresolved — and where a philosopher of Sijuwade's caliber, engaging his own position with full rigor, would need to press considerably further than the conversation's format allowed.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">VI</span>
+    <h2>Glen's Synthesis: Generous, Effective, and Incomplete</h2>
+    <p>Glen's closing move is the moment I found most revealing about what the conversation was and wasn't trying to do. He suggests that McClellan's divine image framework, with a qualitative tweak toward uniqueness, eternality and universality, converges with what the Nicene Creed expresses — and McClellan, to his credit as a conversationalist, doesn't push back hard. The result is irenic and feels like resolution. It isn't.</p>
+    <p>The divine image framework, even with Glen's qualitative amplification, does not entail <em>homoousios</em>. A unique, eternal, universal divine image can bear and perfectly manifest the Father's presence without being ontologically identical in substance to him. Philo's Logos is precisely that — eternal, unique, the image of God, a "second God," the one through whom all things were made — and Philo was not a Trinitarian. The convergence Glen identifies is at the level of functional and relational description. The load-bearing divergence is at the level of ontological identity. Those are not the same thing, and the entire Arian controversy was fought precisely over that gap.</p>
+
+    <div class="pull">
+      <p>Glen's synthesis treats the closing of the functional gap as if it closes the ontological one. It does not. McClellan says so directly: for the divine image framework to function as Glen is appropriating it, one would need to move away from the strict philosophical monotheism foundational to the Trinity. Glen does not engage that response in his post-commentary.</p>
+    </div>
+
+    <p>Glen's post-commentary is also telling in what it inadvertently reveals. By tracing the divine image connection back through John's Gospel to the Angel of the Lord, to Moses, to Abraham, he identifies a genuine continuity — but it is a continuity more naturally at home in McClellan's framework than in conciliar Trinitarianism. The Hebrew scriptures' treatment of divine agency through the Angel of the Lord, the divine name, and the divine image is precisely the tradition McClellan argues John was drawing on. The continuity is real. But it is a continuity of cognitive logic, not ontological precision — and reading it as implicitly Trinitarian requires importing exactly the ontological precision those texts were not operating with.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">VII</span>
+    <h2>The Deepest Unaddressed Problem: Univocality and the Hebrew Scriptures</h2>
+    <p>The most significant gap in the entire conversation — and the one that kept nagging at me long after it ended — is the relationship between any Trinitarian framework and the Hebrew scriptures. McClellan gestures at it early when he identifies the presupposition of univocality: the assumption that all the biblical texts must be speaking with one unified and consistent voice, so that the New Testament's claims about Jesus must be reconcilable with the Hebrew scriptures' presentation of God. He identifies this as one of the two main drivers of the Trinitarian project. But he never fully develops what this means specifically for the conciliar framework — focusing his critique primarily on the Pseudo-Athanasian version — and that restraint, whether deliberate or not, lets Sijuwade off the hook for the argument he is actually most vulnerable to.</p>
+    <p>The Hebrew scriptures were produced across many centuries in a cognitive and cultural environment where divine agency was considerably more fluid than any Trinitarian framework requires. The divine council texts, the Angel of the Lord traditions, the fluidity of divine identity in the patriarchal narratives, the Son of Man in Daniel 7, the Wisdom literature — these operate in a world where divine agency could be distributed across multiple figures without anyone experiencing this as a problem requiring ontological resolution. The boundaries between deity and authorized divine representative were deliberately permeable in ways that cut against the precise ontological distinctions any Trinitarian framework needs those texts to be presupposing.</p>
+
+    <div class="pull">
+      <p>The conciliar framework's claim to historical proximity is most defensible at the New Testament level. It becomes progressively less defensible as its explanatory scope extends backward through the intertestamental literature into the Hebrew scriptures themselves. The anachronism compounds dramatically as you move backward through the canon, and no conciliar Trinitarian framework fully escapes it.</p>
+    </div>
+
+    <p>To read the Hebrew scriptures as implicitly pointing toward conciliar Trinitarianism requires exactly the presupposition of univocality McClellan identified as problematic. It requires reading texts produced in a cognitively fluid environment as if they were already reaching toward a framework that would only become articulable after centuries of Greek philosophical development. This is not a knockdown argument against Trinitarianism. It is an argument about what Trinitarianism requires — specifically, that it requires treating a diverse canonical collection, produced across many centuries in radically different cognitive environments, as speaking with sufficient conceptual unity that a single framework developed in the fourth century can coherently account for all of it. That is a significant and underexamined commitment.</p>
+    <p>McClellan's framework has its greatest methodological advantage precisely here. By reading the Hebrew scriptures as operating within a cognitive tradition of fluid divine agency that the New Testament then develops and extends in unprecedented ways in response to Jesus, it avoids the univocality presupposition without denying genuine continuity between the testaments. It can allow the two bodies of literature to be doing related but not identical things within a shared cognitive tradition, without requiring them to converge on a single precise theological framework that neither was explicitly articulating.</p>
+    <p>It is worth noting that this critique applies with similar force to any framework that claims full canonical grounding — Unitarianism and Modalism face it equally. But the conciliar framework's particular version of the problem is that it requires the most philosophically precise ontological commitments to be read back into texts operating in the most conceptually fluid environment. That gap is the one the conversation most conspicuously failed to surface.</p>
+  </section>
+
+  <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section>
+    <span class="section-num">VIII</span>
+    <h2>What the Early Church Was Actually Doing</h2>
+    <p>All of which brings the question McClellan's algebra problem framing was trying to answer back into sharper focus, and demands a more direct answer than either participant offered: what was the early church actually doing?</p>
+    <p>Not solving an algebra problem. But not doing something that had no genuine difficulty at its center either. It was navigating a devotional and soteriological pressure generated by the collision of inherited Jewish covenantal monotheism — where exclusive cultic devotion to the God of Israel was a non-negotiable identity marker — with a devotional practice directing prayer, hymns, invocations and soteriological reliance toward Jesus alongside God from extraordinarily early in the tradition. That practice was not experienced as a logical contradiction. It was experienced as a lived reality requiring progressive articulation and defense.</p>
+    <p>The theological frameworks that emerged over the following centuries were attempts to account for and defend that practice — not to solve a puzzle, but to explain what they were already doing and why it was not idolatry. The pressure was practical and liturgical before it was philosophical. It became increasingly philosophical as Christianity engaged the broader Greco-Roman world under growing apologetic pressure. The move to <em>homoousios</em> is the moment when the tradition committed to answering its deepest questions in the register of Greek substance metaphysics rather than Jewish divine agency — a commitment that resolved certain pressures while generating new ones.</p>
+    <p>Sijuwade's framing — that the councils were answering the question "who do you say that I am?" — is closer to the historical reality than McClellan's algebra problem. But McClellan's underlying intuition — that something was genuinely difficult about this, that the available conceptual tools were strained by what the tradition was trying to do, and that the specific philosophical resolution the councils reached was a genuine innovation rather than a mere articulation of something always already implicit — is not simply wrong. It is imprecisely stated, and that imprecision consistently distorts the conclusions he draws from otherwise careful scholarship.</p>
+  </section>
+
+  <div class="conclusion-wrap">
+    <section>
+      <span class="section-num">IX</span>
+      <h2>What Neither Participant Quite Said</h2>
+      <p>Both participants in this conversation are serious thinkers engaging genuinely difficult questions, and it is a better conversation than most of what passes for public theology on these topics. But the most important conclusion available from everything discussed is one neither quite articulated — and it is more unsettling, and more interesting, than anything either side fully committed to saying.</p>
+      <p>The Nicene conciliar framework represents a genuine and sophisticated attempt to protect both the full divinity of Christ and the integrity of monotheism — and Sijuwade's recovery and defense of it is a real contribution to a conversation that popular theology has badly distorted. It is more coherent than the Pseudo-Athanasian framework most people today associate with the Trinity, has deeper roots in the patristic tradition than Augustine's distorting Latin synthesis, and addresses the soteriological anxiety — can a creature save? — that drove the Arian controversy with genuine theological force. If you are going to be a Trinitarian, this is a more defensible way to be one.</p>
+
+      <div class="pull">
+        <p>What the conciliar framework cannot claim is to be straightforwardly reading the intention of the New Testament authors, and still less the Hebrew scriptural authors. What it can more honestly claim is organic development from genuine commitments present in the apostolic tradition — commitments the conciliar process articulated with increasing philosophical precision under pressures it did not choose and could not avoid.</p>
+      </div>
+
+      <p>McClellan's divine image framework, for its part, is the more historically parsimonious reading of what the New Testament authors were most plausibly doing with the conceptual resources available to them. It does not require ontological commitments that postdate the texts by centuries, and it handles the full range of the Johannine data — including the mutual indwelling language that creates real difficulty for any ontological identity reading — more consistently than any Trinitarian framework does. His methodological insistence on letting each author operate within their demonstrable conceptual horizon is not reductionism. It is basic historical responsibility, and it survives the imprecisions of his popular framing intact.</p>
+      <p>What neither framework fully resolves is the datum that sits at the center of everything: the early Christian devotional practice of treating Jesus as a proper object of worship alongside the Father, documented from extraordinarily early and generating the theological pressure that drove the entire subsequent tradition. McClellan's framework struggles with its intensity and exclusivity — it places Jesus within a recognizable category of exalted divine mediators, but the devotional response went considerably beyond what Second Temple Judaism typically accorded even the most exalted figures in that category. Sijuwade's framework struggles with the anachronism required to read its precise ontological commitments back into texts operating in an entirely different conceptual environment.</p>
+      <p>I find myself more persuaded by McClellan's methodology than his framing, more impressed by Sijuwade's philosophical precision than his citation strategy, and genuinely uncertain about what the most honest account of the tradition ultimately requires us to say. What the conversation demonstrated — perhaps more clearly than either participant intended — is that the most consequential questions here are not about which framework is more rhetorically compelling or which participant scored more points. They are about what kind of interpretive work we are doing when we read ancient texts through modern frameworks, what we owe to the cognitive and cultural environments those texts emerged from, and whether the conceptual tools we bring to the question are adequate to what those texts were actually doing.</p>
+      <p>The most honest account of the tradition is something neither participant quite articulated: a tradition that began with a genuine and irreducible devotional commitment, progressively articulated that commitment under philosophical pressures it could not fully control, produced a sophisticated theological framework that captured something real about its original intuitions while also transforming them in ways the original authors would not have recognized as their own, and then used imperial power to foreclose the debate before the alternatives had been fully worked out. That story does not vindicate either side cleanly. But it is a story the evidence can actually sustain — and sitting with its genuine difficulty, rather than resolving it prematurely in either direction, is the most honest response to a conversation that, at its best, helped bring the hardest questions into sharper focus.</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&nbsp;</p>
+  </footer>
+
+</div>
+</body>
+</html>
